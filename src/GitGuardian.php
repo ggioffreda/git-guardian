@@ -86,7 +86,7 @@ class GitGuardian implements Emitting
         $log = json_decode(file_get_contents($configFile) ?: '[]', true);
         if (isset($log[$repository->getName()]) &&
             new \DateTime($log[$repository->getName()]['fetched_at']) > $repository->getUpdatedAt()) {
-            $git->run(['remote', 'set-url', 'origin', $repository->getAnonymousUri()]);
+            $git->remoteSetUrl('origin', $repository->getAnonymousUri());
             $this->getEmitter()
                 ->emit(GitRepositoryEvent::prepare(
                     'git_guardian.config_skip_repository',
@@ -97,13 +97,13 @@ class GitGuardian implements Emitting
             return;
         }
 
-        $git->run(['remote', 'set-url', 'origin', $repository->getUri()]);
+        $git->remoteSetUrl('origin', $repository->getUri());
         $this->getEmitter()
             ->emit(GitRepositoryEvent::prepare('git_guardian.pre_fetch_repository', $repository, 'fetch', $git));
         $git->fetch(['--all']);
         $this->getEmitter()
             ->emit(GitRepositoryEvent::prepare('git_guardian.post_fetch_repository', $repository, 'fetch', $git));
-        $git->run(['remote', 'set-url', 'origin', $repository->getAnonymousUri()]);
+        $git->remoteSetUrl('origin', $repository->getAnonymousUri());
 
         $log[$repository->getName()] = [
             'name' => $repository->getName(),
