@@ -1,0 +1,25 @@
+{
+    "name": "ggioffreda/git-guardian",
+    "description": "A set of useful tools for backing up and execute tasks in bulk on remote repositories.",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Giovanni Gioffreda",
+            "email": "giovanni.gioffreda@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.4",
+        "ggioffreda/git": "~0.1",
+        "symfony/console": ">=2.4,<4.0",
+        "guzzlehttp/guzzle": "~6.0",
+        "symfony/filesystem": ">=2.4,<4.0",
+        "league/event": "^2.1"
+    },
+    "bin": ["bin/git-guardian"],
+    "autoload": {
+        "psr-4": {
+            "Gioffreda\\Component\\GitGuardian\\": "src/"
+        }
+    }
+}
