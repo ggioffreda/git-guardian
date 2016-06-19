@@ -9,7 +9,7 @@ Installation
 
 This component is available for installation through [composer](https://getcomposer.org/). From command line run:
 
-    $ composer require "ggioffreda/git-guardiaan" "~0.1"
+    $ composer require "ggioffreda/git-guardian" "~0.1"
 
 Or add the following to your composer.json in the require section:
 
