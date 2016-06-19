@@ -4,6 +4,8 @@ Git Guardian Component
 This component helps querying remote services, like BitBucket and GitHub to get a list of repositories and helps cloning
  them locally for use or backup.
 
+[![Build Status](https://travis-ci.org/ggioffreda/git-guardian.svg?branch=master)](https://travis-ci.org/ggioffreda/git-guardian)
+
 Installation
 ------------
 
