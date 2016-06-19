@@ -37,6 +37,7 @@ class GitGuardian implements Emitting
      */
     public function cloneRepository(RepositoryInterface $repository, $destination, array $options = null)
     {
+        $options = array_merge($this->defaultOptions, $options ?: []);
         $configFile = DIRECTORY_SEPARATOR === $options['clone_config'][0] ?
             $options['clone_config'] : $destination.DIRECTORY_SEPARATOR.$options['clone_config'];
 
