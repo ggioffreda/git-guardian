@@ -14,7 +14,7 @@
         "symfony/console": ">=2.4,<4.0",
         "guzzlehttp/guzzle": "~6.0",
         "symfony/filesystem": ">=2.4,<4.0",
-        "league/event": "^2.1"
+        "league/event": ">=2.0,<3.0"
     },
     "bin": ["bin/git-guardian"],
     "autoload": {
