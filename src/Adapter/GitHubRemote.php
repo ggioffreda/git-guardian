@@ -12,8 +12,8 @@ class GitHubRemote extends AbstractRemote
     {
         parent::__construct();
         $this->endpoints = [
-            'repositories' => 'https://api.github.com/user/repos?per_page=1',
-            'public_repositories' => 'https://api.github.com/%s/repos?per_page=1'
+            'repositories' => 'https://api.github.com/user/repos?per_page=100',
+            'public_repositories' => 'https://api.github.com/%s/repos?per_page=100'
         ];
     }
 
