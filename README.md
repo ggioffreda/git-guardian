@@ -4,6 +4,15 @@ Git Guardian Component
 This component helps querying remote services, like BitBucket and GitHub to get a list of repositories and helps cloning
  them locally for use or backup.
 
+The requirements are specified in the composer.json file:
+
+ * [PHP](http://www.php.net/) version >=5.5
+ * [symfony/Console](http://symfony.com/doc/current/components/console.html) version >= 2.4
+ * [symfony/Filesystem](http://symfony.com/doc/current/components/filesystem.html) version >= 2.4
+ * [ggioffreda/git](https://github.com/ggioffreda/git) version >= 0.1.3
+ * [guzzlehttp/guzzle](http://docs.guzzlephp.org/en/latest/) version >= 6.0
+ * [league/event](https://github.com/thephpleague/event) version >= 2.0
+
 [![Build Status](https://travis-ci.org/ggioffreda/git-guardian.svg?branch=master)](https://travis-ci.org/ggioffreda/git-guardian)
 
 Installation
