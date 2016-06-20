@@ -25,7 +25,7 @@ class GitGuardianCommand extends Command
             ->addOption('adapter', null, InputOption::VALUE_REQUIRED, 'The adapter to use', 'BitBucket')
             ->addOption('client-id', null, InputOption::VALUE_REQUIRED, 'The client ID (BitBucket only)')
             ->addOption('client-secret', null, InputOption::VALUE_REQUIRED, 'The client secret (BitBucket only)')
-            ->addOption('personal-token', null, InputOption::VALUE_REQUIRED, 'The personal access token (GitHub)')
+            ->addOption('personal-token', null, InputOption::VALUE_REQUIRED, 'The personal access token (GitHub only)')
             ->addOption('destination', 'd', InputOption::VALUE_REQUIRED, 'The destination where to clone to', '.cloned')
         ;
     }
