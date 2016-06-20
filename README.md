@@ -30,47 +30,79 @@ Or add the following to your composer.json in the require section:
 
 For more information check the project page on [Packagist](https://packagist.org/packages/ggioffreda/git-guardian).
 
-Usage - Command Line Interface
-------------------------------
+Usage
+-----
+
+### Command Line Interface
 
 To clone all the repositories that belongs to a user, or users if you specify more than one, you can use the provided
  command `bin/git-guardian`. The command line interface is built using the
  [Symfony Console Component](http://symfony.com/doc/current/components/console/introduction.html) and can be easily
  integrated in your Symfony project.
 
-To run the built-in command type:
+To clone locally your **BitBucket repositories**, including your private ones, run the built-in command like so:
 
     $ bin/git-guardian git:guardian:clone-all --client-id=SbAnN_example --client-secret=1JEfYU1nYhkoC_example ggioffreda
 
-This will clone all repositories of the given user locally. You can specify the destination directory. The help looks
- like this at the moment:
+This will clone all repositories of the given user locally. You can specify the destination directory. You can provide
+ more than one username or team name and the below command will clone all repositories that belongs to those users or
+ teams. This is an example:
+
+    $ bin/git-guardian git:guardian:clone-all --client-id=SbAnN_example --client-secret=1JEfYU1nYhkoC_example ggioffreda myorganisation mycomany myfriend
+
+The command above will clone not only the public repositories for those users or teams, it will clone everything you
+ have access to. If you do not provide the client ID and secret the command will clone only public repositories:
+
+    $ bin/git-guardian git:guardian:clone-all -v ggioffreda myorganisation mycomany myfriend
+
+The `-v` switch will ask for verbose output so you can see what's going on while the command runs.
+
+Another example for cloning locally your **GitHub repositories**, including your private ones, is:
+
+    $./bin/git-guardian git:guardian:clone --adapter=GitHub --personal-token=6a67fbb73cd_example ggioffreda
+
+The way GitHub authenticates is slightly different, so you have to provide your personal access token and your username
+ as first user in the list of users/organisations you want to clone. This will clone all private repositories you have
+ access to as well as the public ones for any other users you give on the command line. Since GitHub handles users and
+ organisations differently you have to provide them as follows:
+
+    $./bin/git-guardian git:guardian:clone --adapter=GitHub --personal-token=6a67fbb73cd_example ggioffreda orgs/mycompany users/myfriend
+
+You can clone just the public repositories without providing your personal access token, like so:
+
+    $./bin/git-guardian git:guardian:clone --adapter=GitHub users/ggioffreda orgs/mycompany users/myfriend
+
+Note that now your username requires to be identified as user and not organisation, otherwise the command will throw an
+ error.
+
+The help looks like below:
 
 ```
 Usage:
   git:guardian:clone-all [options] [--] [<owner>]...
 
 Arguments:
-  owner                              The owner or owners of the repositories
+  owner                                The owner or owners of the repositories
 
 Options:
-      --adapter=ADAPTER              The adapter to use [default: "BitBucket"]
-      --client-id=CLIENT-ID          The client ID
-      --client-secret=CLIENT-SECRET  The client secret
-  -d, --destination=DESTINATION      The destination where to clone to [default: ".cloned"]
-  -h, --help                         Display this help message
-  -q, --quiet                        Do not output any message
-  -V, --version                      Display this application version
-      --ansi                         Force ANSI output
-      --no-ansi                      Disable ANSI output
-  -n, --no-interaction               Do not ask any interactive question
-  -v|vv|vvv, --verbose               Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
+      --adapter=ADAPTER                The adapter to use [default: "BitBucket"]
+      --client-id=CLIENT-ID            The client ID (BitBucket only)
+      --client-secret=CLIENT-SECRET    The client secret (BitBucket only)
+      --personal-token=PERSONAL-TOKEN  The personal access token (GitHub only)
+  -d, --destination=DESTINATION        The destination where to clone to [default: ".cloned"]
+  -h, --help                           Display this help message
+  -q, --quiet                          Do not output any message
+  -V, --version                        Display this application version
+      --ansi                           Force ANSI output
+      --no-ansi                        Disable ANSI output
+  -n, --no-interaction                 Do not ask any interactive question
+  -v|vv|vvv, --verbose                 Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
 
 Help:
  Fetches all the repositories for the given users
 ```
 
-Usage - Remote Adapter
-----------------------
+### Remote Adapter
 
 You can use the `Gioffreda\Component\GitGuardian\Adapter\BitBucketRemote` class to fetch the list of repositories owned
  by a specified user. If you provide the OAuth2 client ID and secret you can fetch the private ones as well. Here's an
@@ -120,8 +152,7 @@ Available events emitted by the remote adapter are:
 - **git_remote.client_request** is emitted every time an API call is sent to the remote service and exposes the endpoint
    being called.
 
-Usage - Git Guardian
---------------------
+### Git Guardian
 
 You can use the `Gioffreda\Component\GitGuardian\GitGuardian` class to bulk clone your repositories into a destination.
  The following is an example on how to do so:
