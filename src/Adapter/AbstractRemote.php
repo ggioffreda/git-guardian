@@ -102,4 +102,20 @@ abstract class AbstractRemote implements RemoteInterface, Emitting
     {
         $this->endpoints[$name] = $endpoint;
     }
+
+    /**
+     * @return Client
+     */
+    public function getClient()
+    {
+        return $this->client;
+    }
+
+    /**
+     * @param Client $client
+     */
+    public function setClient(Client $client)
+    {
+        $this->client = $client;
+    }
 }
