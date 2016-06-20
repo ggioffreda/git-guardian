@@ -42,35 +42,45 @@ To clone all the repositories that belongs to a user, or users if you specify mo
 
 To clone locally your **BitBucket repositories**, including your private ones, run the built-in command like so:
 
-    $ bin/git-guardian git:guardian:clone-all --client-id=SbAnN_example --client-secret=1JEfYU1nYhkoC_example ggioffreda
+    $ bin/git-guardian git:guardian:clone-all \
+        --client-id=SbAnN_example --client-secret=1JEfYU1nYhkoC_example \
+        ggioffreda
 
 This will clone all repositories of the given user locally. You can specify the destination directory. You can provide
  more than one username or team name and the below command will clone all repositories that belongs to those users or
  teams. This is an example:
 
-    $ bin/git-guardian git:guardian:clone-all --client-id=SbAnN_example --client-secret=1JEfYU1nYhkoC_example ggioffreda myorganisation mycomany myfriend
+    $ bin/git-guardian git:guardian:clone-all \
+        --client-id=SbAnN_example --client-secret=1JEfYU1nYhkoC_example \
+        ggioffreda myorganisation mycompany myfriend
 
 The command above will clone not only the public repositories for those users or teams, it will clone everything you
  have access to. If you do not provide the client ID and secret the command will clone only public repositories:
 
-    $ bin/git-guardian git:guardian:clone-all -v ggioffreda myorganisation mycomany myfriend
+    $ bin/git-guardian git:guardian:clone-all -v \
+        ggioffreda myorganisation mycompany myfriend
 
 The `-v` switch will ask for verbose output so you can see what's going on while the command runs.
 
 Another example for cloning locally your **GitHub repositories**, including your private ones, is:
 
-    $./bin/git-guardian git:guardian:clone --adapter=GitHub --personal-token=6a67fbb73cd_example ggioffreda
+    $./bin/git-guardian git:guardian:clone \
+        --adapter=GitHub --personal-token=6a67fbb73cd_example \
+        ggioffreda
 
 The way GitHub authenticates is slightly different, so you have to provide your personal access token and your username
  as first user in the list of users/organisations you want to clone. This will clone all private repositories you have
  access to as well as the public ones for any other users you give on the command line. Since GitHub handles users and
  organisations differently you have to provide them as follows:
 
-    $./bin/git-guardian git:guardian:clone --adapter=GitHub --personal-token=6a67fbb73cd_example ggioffreda orgs/mycompany users/myfriend
+    $./bin/git-guardian git:guardian:clone \
+        --adapter=GitHub --personal-token=6a67fbb73cd_example \
+        ggioffreda orgs/mycompany users/myfriend
 
 You can clone just the public repositories without providing your personal access token, like so:
 
-    $./bin/git-guardian git:guardian:clone --adapter=GitHub users/ggioffreda orgs/mycompany users/myfriend
+    $./bin/git-guardian git:guardian:clone \
+        --adapter=GitHub users/ggioffreda orgs/mycompany users/myfriend
 
 Note that now your username requires to be identified as user and not organisation, otherwise the command will throw an
  error.
@@ -96,7 +106,7 @@ Options:
       --ansi                           Force ANSI output
       --no-ansi                        Disable ANSI output
   -n, --no-interaction                 Do not ask any interactive question
-  -v|vv|vvv, --verbose                 Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
+  -v|vv|vvv, --verbose                 Increase the verbosity of messages: 1 for normal output, ...
 
 Help:
  Fetches all the repositories for the given users
