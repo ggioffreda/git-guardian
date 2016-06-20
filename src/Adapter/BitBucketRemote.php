@@ -5,32 +5,22 @@ namespace Gioffreda\Component\GitGuardian\Adapter;
 use Gioffreda\Component\GitGuardian\Event\GitRemoteEvent;
 use Gioffreda\Component\GitGuardian\Event\GitRepositoryEvent;
 use Gioffreda\Component\GitGuardian\Exception\AdapterException;
-use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Response;
 
 class BitBucketRemote extends AbstractRemote
 {
-    private $endpoints = [
-        'oauth2' => 'https://bitbucket.org/site/oauth2/access_token',
-        'repositories' => 'https://api.bitbucket.org/2.0/repositories/%s'
-    ];
-
-    /**
-     * @var Client
-     */
-    private $client;
-
     /**
      * @var array
      */
     private $token;
 
-    /**
-     * BitBucketRemote constructor.
-     */
     public function __construct()
     {
-        $this->client = new Client();
+        parent::__construct();
+        $this->endpoints = [
+            'oauth2' => 'https://bitbucket.org/site/oauth2/access_token',
+            'repositories' => 'https://api.bitbucket.org/2.0/repositories/%s'
+        ];
     }
 
     public function getName()

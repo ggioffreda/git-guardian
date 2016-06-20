@@ -3,6 +3,7 @@
 namespace Gioffreda\Component\GitGuardian\Command;
 
 use Gioffreda\Component\GitGuardian\Adapter\BitBucketRemote;
+use Gioffreda\Component\GitGuardian\Adapter\GitHubRemote;
 use Gioffreda\Component\GitGuardian\Event\GitRepositoryEvent;
 use Gioffreda\Component\GitGuardian\GitGuardian;
 use League\Event\EmitterInterface;
@@ -22,35 +23,58 @@ class GitGuardianCommand extends Command
             ->setDescription('Fetches all the repositories for the given users')
             ->addArgument('owner', InputArgument::IS_ARRAY, 'The owner or owners of the repositories')
             ->addOption('adapter', null, InputOption::VALUE_REQUIRED, 'The adapter to use', 'BitBucket')
-            ->addOption('client-id', null, InputOption::VALUE_REQUIRED, 'The client ID')
-            ->addOption('client-secret', null, InputOption::VALUE_REQUIRED, 'The client secret')
+            ->addOption('client-id', null, InputOption::VALUE_REQUIRED, 'The client ID (BitBucket only)')
+            ->addOption('client-secret', null, InputOption::VALUE_REQUIRED, 'The client secret (BitBucket only)')
+            ->addOption('personal-token', null, InputOption::VALUE_REQUIRED, 'The personal access token (GitHub)')
             ->addOption('destination', 'd', InputOption::VALUE_REQUIRED, 'The destination where to clone to', '.cloned')
         ;
     }
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        if ('BitBucket' !== $input->getOption('adapter')) {
+        if (!in_array($input->getOption('adapter'), ['BitBucket', 'GitHub'])) {
             throw new InvalidArgumentException(sprintf(
                 'The given adapter "%s" is not supported (yet)',
                 $input->getOption('adapter')
             ));
         }
 
-        $bitBucketCredentials = [
-            'client_id' => $input->getOption('client-id'),
-            'client_secret' => $input->getOption('client-secret')
-        ];
-
         $guardian = new GitGuardian();
         $emitter = $guardian->getEmitter();
 
-        foreach ($input->getArgument('owner') as $owner) {
-            $remote = new BitBucketRemote();
-            $remote->setEmitter($emitter);
-            $remote->setOptions($bitBucketCredentials);
-            $remote->setUser($owner);
-            $guardian->addRemote($remote);
+        if ('GitHub' === $input->getOption('adapter')) {
+            $users = $input->getArgument('owner');
+            if (count($users) && !strstr($users[0], '/')) {
+                $username = array_shift($users);
+                $gitHubCredentials = [
+                    'personal_token' => $input->getOption('personal-token'),
+                    'username' => $username
+                ];
+                $remote = new GitHubRemote();
+                $remote->setEmitter($emitter);
+                $remote->setOptions($gitHubCredentials);
+                $guardian->addRemote($remote);
+            }
+
+            foreach ($users as $owner) {
+                $remote = new GitHubRemote();
+                $remote->setEmitter($emitter);
+                $remote->setUser($owner);
+                $guardian->addRemote($remote);
+            }
+        } else {
+            $bitBucketCredentials = [
+                'client_id' => $input->getOption('client-id'),
+                'client_secret' => $input->getOption('client-secret')
+            ];
+
+            foreach ($input->getArgument('owner') as $owner) {
+                $remote = new BitBucketRemote();
+                $remote->setEmitter($emitter);
+                $remote->setOptions($bitBucketCredentials);
+                $remote->setUser($owner);
+                $guardian->addRemote($remote);
+            }
         }
 
         $this->setupListeners($emitter, $output);

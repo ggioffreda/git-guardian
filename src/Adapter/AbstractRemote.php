@@ -3,6 +3,7 @@
 namespace Gioffreda\Component\GitGuardian\Adapter;
 
 use Gioffreda\Component\GitGuardian\Emitting;
+use GuzzleHttp\Client;
 use League\Event\Emitter;
 use League\Event\EmitterInterface;
 
@@ -22,6 +23,24 @@ abstract class AbstractRemote implements RemoteInterface, Emitting
      * @var string
      */
     protected $user;
+
+    /**
+     * @var Client
+     */
+    protected $client;
+
+    /**
+     * @var array
+     */
+    protected $endpoints = [];
+
+    /**
+     * BitBucketRemote constructor.
+     */
+    public function __construct()
+    {
+        $this->client = new Client();
+    }
 
     /**
      * @param EmitterInterface $emitter
@@ -65,5 +84,22 @@ abstract class AbstractRemote implements RemoteInterface, Emitting
     public function setUser($user)
     {
         $this->user = $user;
+    }
+
+    /**
+     * @return array
+     */
+    public function getEndpoints()
+    {
+        return $this->endpoints;
+    }
+
+    /**
+     * @param string $name
+     * @param string $endpoint
+     */
+    public function setEndpoint($name, $endpoint)
+    {
+        $this->endpoints[$name] = $endpoint;
     }
 }
