@@ -87,8 +87,7 @@ class GitGuardianTest extends \PHPUnit_Framework_TestCase
         $client->expects($this->once())->method('__call')->willReturn($tokenResponse);
 
         $remote->setClient($client);
-        $token['expires_at'] =  new \DateTime('+1 hour');
-        $this->assertEquals($token, $remote->getToken());
+        $this->assertArraySubset($token, $remote->getToken());
     }
 
     public function testGitHubAuthentication()
