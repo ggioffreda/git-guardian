@@ -42,7 +42,7 @@ To clone all the repositories that belongs to a user, or users if you specify mo
 
 To clone locally your **BitBucket repositories**, including your private ones, run the built-in command like so:
 
-    $ bin/git-guardian git:guardian:clone-all \
+    $ ./bin/git-guardian git:guardian:clone-all \
         --client-id=SbAnN_example --client-secret=1JEfYU1nYhkoC_example \
         ggioffreda
 
@@ -50,14 +50,14 @@ This will clone all repositories of the given user locally. You can specify the 
  more than one username or team name and the below command will clone all repositories that belongs to those users or
  teams. This is an example:
 
-    $ bin/git-guardian git:guardian:clone-all \
+    $ ./bin/git-guardian git:guardian:clone-all \
         --client-id=SbAnN_example --client-secret=1JEfYU1nYhkoC_example \
         ggioffreda myorganisation mycompany myfriend
 
 The command above will clone not only the public repositories for those users or teams, it will clone everything you
  have access to. If you do not provide the client ID and secret the command will clone only public repositories:
 
-    $ bin/git-guardian git:guardian:clone-all -v \
+    $ ./bin/git-guardian git:guardian:clone-all -v \
         ggioffreda myorganisation mycompany myfriend
 
 The `-v` switch will ask for verbose output so you can see what's going on while the command runs.
