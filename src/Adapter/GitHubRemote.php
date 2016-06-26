@@ -8,6 +8,8 @@ use GuzzleHttp\Psr7\Response;
 
 class GitHubRemote extends AbstractRemote
 {
+    const REMOTE_CANONICAL_NAME = 'github.com';
+
     public function __construct()
     {
         parent::__construct();
@@ -76,7 +78,7 @@ class GitHubRemote extends AbstractRemote
     
     public function getName()
     {
-        return 'github.com';
+        return self::REMOTE_CANONICAL_NAME;
     }
 
     public function getAuthenticationPart()

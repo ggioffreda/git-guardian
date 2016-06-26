@@ -4,8 +4,10 @@
 require __DIR__ . '/../vendor/autoload.php';
 
 use Gioffreda\Component\GitGuardian\Command\GitGuardianCommand;
+use Gioffreda\Component\GitGuardian\Command\GitGuardianListKnownCommand;
 use Symfony\Component\Console\Application;
 
 $application = new Application();
 $application->add(new GitGuardianCommand());
+$application->add(new GitGuardianListKnownCommand());
 $application->run();

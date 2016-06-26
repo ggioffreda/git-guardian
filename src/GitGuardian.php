@@ -32,6 +32,21 @@ class GitGuardian implements Emitting
     ];
 
     /**
+     * @param string $destination
+     * @param array|null $options
+     * @return array
+     */
+    public function getConfigLog($destination, array $options = null)
+    {
+        $options = array_merge($this->defaultOptions, $options ?: []);
+        $configFile = DIRECTORY_SEPARATOR === $options['clone_config'][0] ?
+            $options['clone_config'] : $destination.DIRECTORY_SEPARATOR.$options['clone_config'];
+        $configLog = json_decode(@file_get_contents($configFile), true);
+
+        return json_last_error() === JSON_ERROR_NONE ? $configLog : [];
+    }
+
+    /**
      * @param RepositoryInterface $repository
      * @param $destination
      * @param array|null $options

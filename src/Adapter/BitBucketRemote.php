@@ -9,6 +9,8 @@ use GuzzleHttp\Psr7\Response;
 
 class BitBucketRemote extends AbstractRemote
 {
+    const REMOTE_CANONICAL_NAME = 'bitbucket.org';
+
     /**
      * @var array
      */
@@ -25,7 +27,7 @@ class BitBucketRemote extends AbstractRemote
 
     public function getName()
     {
-        return 'bitbucket.org';
+        return self::REMOTE_CANONICAL_NAME;
     }
 
     /**
