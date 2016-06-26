@@ -117,6 +117,12 @@ class GitGuardianCommand extends Command
             ));
         });
 
+        $emitter->addListener('git_guardian.exception_repository', function ($event) use ($output) {
+            /** @var GitRepositoryEvent $event */
+            $data = $event->getData();
+            $output->writeln(sprintf('[<error>Errored: %s</error>]', $data['exception']->getMessage()));
+        });
+
         $emitter->addListener('git_guardian.config_skip_repository', function () use ($output) {
             /** @var GitRepositoryEvent $event */
             $output->writeln('[<info>Skipped</info>]');

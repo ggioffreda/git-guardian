@@ -2,6 +2,7 @@
 
 namespace Gioffreda\Component\GitGuardian;
 
+use Gioffreda\Component\Git\Exception\GitProcessException;
 use Gioffreda\Component\Git\Git;
 use Gioffreda\Component\GitGuardian\Adapter\RemoteInterface;
 use Gioffreda\Component\GitGuardian\Adapter\RepositoryInterface;
@@ -147,7 +148,17 @@ class GitGuardian implements Emitting
         }
 
         foreach ($repositories as $repository) {
-            $this->cloneRepository($repository, $destination, $options);
+            try {
+                $this->cloneRepository($repository, $destination, $options);
+            } catch (GitProcessException $e) {
+                $this->getEmitter()->emit(GitRepositoryEvent::prepare(
+                    'git_guardian.exception_repository',
+                    $repository,
+                    'error',
+                    null,
+                    ['destination' => $destination, 'options' => $options ?: [], 'exception' => $e ]
+                ));
+            }
         }
 
         $this->getEmitter()->emit(GitRemoteEvent::prepare('git_guardian.post_clone_remote', $remote, [
