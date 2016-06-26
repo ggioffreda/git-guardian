@@ -42,6 +42,8 @@ class GitHubRemote extends AbstractRemote
                     $definition['description'],
                     $definition['clone_url']
                 );
+                $repository->setSize($definition['size']);
+                $repository->setPrivate($definition['private']);
                 $repository->setUpdatedAt(new \DateTime($definition['updated_at']));
                 $repository->setRemote($this);
 

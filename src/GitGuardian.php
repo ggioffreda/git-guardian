@@ -84,6 +84,7 @@ class GitGuardian implements Emitting
                 ));
         }
 
+        $skip = false;
         $log = json_decode(file_get_contents($configFile) ?: '[]', true);
         if (isset($log[$repository->getName()]) &&
             new \DateTime($log[$repository->getName()]['fetched_at']) > $repository->getUpdatedAt()) {
@@ -95,16 +96,18 @@ class GitGuardian implements Emitting
                     'config_skip',
                     $git
                 ));
-            return;
+            $skip = true;
         }
 
-        $git->remoteSetUrl('origin', $repository->getUri());
-        $this->getEmitter()
-            ->emit(GitRepositoryEvent::prepare('git_guardian.pre_fetch_repository', $repository, 'fetch', $git));
-        $git->fetch(['--all']);
-        $this->getEmitter()
-            ->emit(GitRepositoryEvent::prepare('git_guardian.post_fetch_repository', $repository, 'fetch', $git));
-        $git->remoteSetUrl('origin', $repository->getAnonymousUri());
+        if (!$skip) {
+            $git->remoteSetUrl('origin', $repository->getUri());
+            $this->getEmitter()
+                ->emit(GitRepositoryEvent::prepare('git_guardian.pre_fetch_repository', $repository, 'fetch', $git));
+            $git->fetch(['--all']);
+            $this->getEmitter()
+                ->emit(GitRepositoryEvent::prepare('git_guardian.post_fetch_repository', $repository, 'fetch', $git));
+            $git->remoteSetUrl('origin', $repository->getAnonymousUri());
+        }
 
         $log[$repository->getName()] = [
             'name' => $repository->getName(),
@@ -112,6 +115,9 @@ class GitGuardian implements Emitting
             'uri' => $repository->getAnonymousUri(),
             'path' => $path,
             'commits' => $git->getLogs(10),
+            'commits_count' => (int) $git->run(['rev-list', '--all', '--count']),
+            'size' => $repository->getSize(),
+            'private' => $repository->isPrivate(),
             'branches' => $git->getBranches(),
             'fetched_at' => date(DATE_ISO8601),
             'updated_at' => $repository->getUpdatedAt() ? $repository->getUpdatedAt()->format(DATE_ISO8601) : null

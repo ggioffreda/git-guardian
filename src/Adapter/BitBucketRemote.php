@@ -55,6 +55,8 @@ class BitBucketRemote extends AbstractRemote
                 }
 
                 $repository = new BitBucketRepository($definition['full_name'], $definition['description'], $clone);
+                $repository->setSize($definition['size']);
+                $repository->setPrivate($definition['is_private']);
                 $repository->setUpdatedAt(new \DateTime($definition['updated_on']));
                 $repository->setRemote($this);
                 

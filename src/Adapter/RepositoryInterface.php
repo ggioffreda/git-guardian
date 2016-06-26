@@ -15,6 +15,16 @@ interface RepositoryInterface
     public function getDescription();
 
     /**
+     * @return int
+     */
+    public function getSize();
+
+    /**
+     * @return bool
+     */
+    public function isPrivate();
+
+    /**
      * @return string
      */
     public function getAnonymousUri();

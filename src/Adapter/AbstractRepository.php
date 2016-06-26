@@ -15,6 +15,16 @@ abstract class AbstractRepository implements RepositoryInterface
     private $description;
 
     /**
+     * @var int
+     */
+    private $size;
+
+    /**
+     * @var bool
+     */
+    private $private;
+
+    /**
      * @var string
      */
     private $anonymousUri;
@@ -64,6 +74,38 @@ abstract class AbstractRepository implements RepositoryInterface
     public function getAnonymousUri()
     {
         return $this->anonymousUri;
+    }
+
+    /**
+     * @return int
+     */
+    public function getSize()
+    {
+        return $this->size;
+    }
+
+    /**
+     * @param int $size
+     */
+    public function setSize($size)
+    {
+        $this->size = $size;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isPrivate()
+    {
+        return $this->private;
+    }
+
+    /**
+     * @param boolean $private
+     */
+    public function setPrivate($private)
+    {
+        $this->private = $private;
     }
 
     /**

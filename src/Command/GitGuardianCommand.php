@@ -96,6 +96,13 @@ class GitGuardianCommand extends Command
                 $event->getRepository()->getName(),
                 $event->getRepository()->getAnonymousUri()
             ));
+            if ($output->isVeryVerbose()) {
+                $data = $event->getData();
+                $output->writeln(sprintf(
+                    'Repository definition: %s',
+                    json_encode($data['definition'], JSON_PRETTY_PRINT)
+                ));
+            }
         });
 
         $emitter->addListener('git_guardian.pre_clone_repository', function ($event) use ($output) {
