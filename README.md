@@ -35,12 +35,18 @@ Usage
 
 ### Command Line Interface
 
-To clone all the repositories that belongs to a user, or users if you specify more than one, you can use the provided
- command `bin/git-guardian`. The command line interface is built using the
+You can use the provided command `bin/git-guardian` to clone your repositories or list the known ones that you've
+ already cloned locally. The command line interface is built using the
  [Symfony Console Component](http://symfony.com/doc/current/components/console/introduction.html) and can be easily
  integrated in your Symfony project.
 
-To clone locally your **BitBucket repositories**, including your private ones, run the built-in command like so:
+#### Cloning all repositories
+
+To clone all the repositories that belongs to a user, or users if you specify more than one you can use the built in
+ command `git:guardian:clone-all`.
+
+For example to clone locally your **BitBucket repositories**, including your private ones, run the built-in command
+ like so:
 
     $ ./bin/git-guardian git:guardian:clone-all \
         --client-id=SbAnN_example --client-secret=1JEfYU1nYhkoC_example \
@@ -110,6 +116,41 @@ Options:
 
 Help:
  Fetches all the repositories for the given users
+```
+
+#### List all known repositories
+
+To list all known repositories you can run:
+
+    $ ./bin/git-guardian git:guardian:list-known
+
+You can specify a different adapter, the destination where the repositories have been cloned and a different format.
+ Available formats are:
+
+- **table** (default) this format is useful for human analysis;
+- **table-borderless** similar to the above but without vertical separators between columns;
+- **table-compact** similar to **table** but with no borders
+- **csv** prints the list in CSV format
+- **tsv** prints the list in TSV format, basically a CSV using the tab character as separator
+
+```
+Usage:
+  git:guardian:list-known [options]
+
+Options:
+      --adapter=ADAPTER          The adapter to use [default: "BitBucket"]
+  -d, --destination=DESTINATION  The destination where to clone to [default: ".cloned"]
+  -F, --format=FORMAT            The format of the output [default: "table"]
+  -h, --help                     Display this help message
+  -q, --quiet                    Do not output any message
+  -V, --version                  Display this application version
+      --ansi                     Force ANSI output
+      --no-ansi                  Disable ANSI output
+  -n, --no-interaction           Do not ask any interactive question
+  -v|vv|vvv, --verbose           Increase the verbosity of messages: 1 for normal output, 2 for more verbose ...
+
+Help:
+ List all known repositories
 ```
 
 ### Remote Adapter
