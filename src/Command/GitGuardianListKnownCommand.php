@@ -56,6 +56,12 @@ class GitGuardianListKnownCommand extends Command
             case 'tsv':
                 $this->dumpXsvFormat($configLog, $adapter, "\t");
                 break;
+            case 'json':
+                $this->dumpJsonFormat($configLog, $adapter);
+                break;
+            case 'json-pretty':
+                $this->dumpJsonFormat($configLog, $adapter, JSON_PRETTY_PRINT);
+                break;
             default:
                 throw new InvalidArgumentException(sprintf(
                     'The format "%s" is not supported',
@@ -82,6 +88,20 @@ class GitGuardianListKnownCommand extends Command
         foreach ($this->getInfoFromConfigLog($configLog, $adapter) as $row) {
             fputcsv(STDOUT, $row, $separator);
         }
+    }
+
+    protected function dumpJsonFormat(array $configLog, $adapter, $flags = 0)
+    {
+        $data = ['repositories' => []];
+        $keys = array_map(function ($key) {
+            return str_replace(' ', '_', strtolower($key));
+        }, $this->getHeaders());
+
+        foreach ($this->getInfoFromConfigLog($configLog, $adapter) as $values) {
+            $data['repositories'][] = array_combine($keys, $values);
+        }
+
+        fputs(STDOUT, json_encode($data, $flags)."\n");
     }
 
     protected function getHeaders()
