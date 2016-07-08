@@ -132,6 +132,8 @@ You can specify a different adapter, the destination where the repositories have
 - **table-compact** similar to **table** but with no borders
 - **csv** prints the list in CSV format
 - **tsv** prints the list in TSV format, basically a CSV using the tab character as separator
+- **json** prints the list as a JSON object
+- **json-pretty** prints the list as a JSON object, with indentation to enhance readability
 
 ```
 Usage:
