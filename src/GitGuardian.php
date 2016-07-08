@@ -124,13 +124,20 @@ class GitGuardian implements Emitting
             $git->remoteSetUrl('origin', $repository->getAnonymousUri());
         }
 
+        $commitsCount = null;
+        try {
+            $commitsCount = (int) $git->run(['rev-list', '--all', '--count']);
+        } catch (GitProcessException $e) {
+            // do nothing about it
+        }
+
         $log[$repository->getName()] = [
             'name' => $repository->getName(),
             'description' => $repository->getDescription(),
             'uri' => $repository->getAnonymousUri(),
             'path' => $path,
             'commits' => $git->getLogs(10),
-            'commits_count' => (int) $git->run(['rev-list', '--all', '--count']),
+            'commits_count' => $commitsCount,
             'size' => $repository->getSize(),
             'private' => $repository->isPrivate(),
             'branches' => $git->getBranches(),
