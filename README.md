@@ -70,7 +70,7 @@ The `-v` switch will ask for verbose output so you can see what's going on while
 
 Another example for cloning locally your **GitHub repositories**, including your private ones, is:
 
-    $./bin/git-guardian git:guardian:clone \
+    $ ./bin/git-guardian git:guardian:clone \
         --adapter=GitHub --personal-token=6a67fbb73cd_example \
         ggioffreda
 
@@ -79,13 +79,13 @@ The way GitHub authenticates is slightly different, so you have to provide your 
  access to as well as the public ones for any other users you give on the command line. Since GitHub handles users and
  organisations differently you have to provide them as follows:
 
-    $./bin/git-guardian git:guardian:clone \
+    $ ./bin/git-guardian git:guardian:clone \
         --adapter=GitHub --personal-token=6a67fbb73cd_example \
         ggioffreda orgs/mycompany users/myfriend
 
 You can clone just the public repositories without providing your personal access token, like so:
 
-    $./bin/git-guardian git:guardian:clone \
+    $ ./bin/git-guardian git:guardian:clone \
         --adapter=GitHub users/ggioffreda orgs/mycompany users/myfriend
 
 Note that now your username requires to be identified as user and not organisation, otherwise the command will throw an
@@ -149,7 +149,7 @@ Options:
       --ansi                     Force ANSI output
       --no-ansi                  Disable ANSI output
   -n, --no-interaction           Do not ask any interactive question
-  -v|vv|vvv, --verbose           Increase the verbosity of messages: 1 for normal output, 2 for more verbose ...
+  -v|vv|vvv, --verbose           Increase the verbosity of messages: 1 for normal output, ...
 
 Help:
  List all known repositories
