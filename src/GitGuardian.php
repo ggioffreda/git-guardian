@@ -11,6 +11,7 @@ use Gioffreda\Component\GitGuardian\Event\GitRepositoryEvent;
 use League\Event\Emitter;
 use League\Event\EmitterInterface;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Finder\Finder;
 
 class GitGuardian implements Emitting
 {
@@ -131,6 +132,9 @@ class GitGuardian implements Emitting
             // do nothing about it
         }
 
+        $finder = new Finder();
+        $files = $finder->in($path)->count();
+
         $log[$repository->getName()] = [
             'name' => $repository->getName(),
             'description' => $repository->getDescription(),
@@ -142,6 +146,8 @@ class GitGuardian implements Emitting
             'private' => $repository->isPrivate(),
             'branches' => $git->getBranches(),
             'fetched_at' => date(DATE_ISO8601),
+            'files' => $files,
+            'programming_language' => $this->guessLanguages($path, $files),
             'updated_at' => $repository->getUpdatedAt() ? $repository->getUpdatedAt()->format(DATE_ISO8601) : null
         ];
         $this->getEmitter()
@@ -260,5 +266,46 @@ class GitGuardian implements Emitting
     public function setDefaultOptions($defaultOptions)
     {
         $this->defaultOptions = $defaultOptions;
+    }
+
+    protected function guessLanguages($path, $count)
+    {
+        $languages = [
+            'ASP' => [ 'asp' ],
+            'ASP.Net' => [ 'aspx', 'axd', 'asx', 'asmx', 'ashx' ],
+            'C' => [ 'c', 'h' ],
+            'C++' => [ 'cpp' ],
+            'CSS' => [ 'css' ],
+            'Coldfusion' => [ 'cfm' ],
+            'Erlang' => [ 'jaws' ],
+            'Flash' => [ 'swf', 'fla' ],
+            'HTML' => [ 'html', 'htm', 'xhtml', 'jhtml' ],
+            'Java' => [ 'java', 'jsp', 'jar', 'jspx', 'wss', 'do', 'action' ],
+            'JavaScript' => [ 'js' ],
+            'PHP' => [ 'php', 'php3', 'php4', 'phtml' ],
+            'Perl' => [ 'pl' ],
+            'Python' => [ 'py' ],
+            'Ruby' => [ 'rb', 'rhtml' ],
+            'XML' => [ 'xml', 'dtd' ]
+        ];
+
+        $return = [];
+
+        foreach ($languages as $language => $extensions) {
+            $languageCount = 0;
+            foreach ($extensions as $extension) {
+                $finder = new Finder();
+                $finder->in($path)->name("*.$extension");
+                $languageCount += $finder->count();
+            }
+            if ($languageCount > 0) {
+                $return[$language] = [
+                    'files' => $languageCount,
+                    'share' => 100 * $languageCount / $count
+                ];
+            }
+        }
+
+        return $return;
     }
 }

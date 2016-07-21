@@ -106,7 +106,7 @@ class GitGuardianListKnownCommand extends Command
 
     protected function getHeaders()
     {
-        return ['Repository', 'Adapter', 'Private', 'Size', 'Commits', 'Updated At'];
+        return ['Repository', 'Adapter', 'Private', 'Size', 'Commits', 'Files', 'P. Language', 'Updated At'];
     }
 
     protected function getInfoFromConfigLog(array $configLog, $adapter)
@@ -118,8 +118,20 @@ class GitGuardianListKnownCommand extends Command
                 isset($repository['private']) ? ($repository['private'] ? 'Y' : 'N') : null,
                 isset($repository['size']) ? $repository['size'] : null,
                 isset($repository['commits_count']) ? $repository['commits_count'] : null,
+                isset($repository['files']) ? $repository['files'] : null,
+                isset($repository['programming_language']) ?
+                    implode(',', array_slice($this->sortProgrammingLanguages($repository['programming_language']), 0, 3)) : null,
                 $repository['updated_at']
             ];
         }, $configLog);
+    }
+
+    protected function sortProgrammingLanguages(array $languages)
+    {
+        uasort($languages, function ($a, $b) {
+            return $a['files'] > $b['files'] ? -1 : 1;
+        });
+
+        return array_keys($languages);
     }
 }
