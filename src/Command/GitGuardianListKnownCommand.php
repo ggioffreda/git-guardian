@@ -84,7 +84,7 @@ class GitGuardianListKnownCommand extends Command
 
     protected function dumpXsvFormat(array $configLog, $adapter, $separator = ',')
     {
-        fputcsv(STDOUT, $this->getHeaders(), "\t");
+        fputcsv(STDOUT, $this->getHeaders(), $separator);
         foreach ($this->getInfoFromConfigLog($configLog, $adapter) as $row) {
             fputcsv(STDOUT, $row, $separator);
         }
