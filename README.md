@@ -249,8 +249,6 @@ The `GitGuardian` class emits a range of events that allows you to monitor the s
 Resources
 ---------
 
-**TODO: write the tests**
-
 You can run the unit tests with the following command (requires [phpunit](http://phpunit.de/)):
 
     $ cd path/to/Gioffreda/Component/Git/
